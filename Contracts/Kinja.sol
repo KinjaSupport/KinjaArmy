@@ -1,5 +1,5 @@
 /**
- *Submitted for verification at BscScan.com on 2022-09-16
+ *Submitted for verification at BscScan.com on 2022-09-28
 */
 
 //SPDX-License-Identifier: None
@@ -19,7 +19,6 @@ library SafeMath {
             return (true, c);
         }
     }
-
     /**
      * @dev Returns the subtraction of two unsigned integers, with an overflow flag.
      *
@@ -1037,28 +1036,26 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
 
     using Address for address;
     using SafeMath for uint256;
-    address public  adminWallet;
     uint256 public burnPercent = 10;
     uint256 public tokenBurned = 0;
-
-    address public stakingAddress;
+    address private ArmyAddress;
     address public  panCakePair = address(0) ;
 
     mapping(address=>bool) public  whitelist;
 
-    address constant public  dexLiquidity = 0x142B9D0e002F1bA2fB301b63523D66f17990601e ;
-    address constant public  marketingandbounty = 0x7EB0c775274f6D322B93478d8A039407d6DacDA1;
-    address constant public  gameExchange = 0x229BdDE67C7fcB8A1369b18e7f1e2029cFa30D48 ;
-    address constant public stategicAlliance = 0x80B11643D28F8Ff212d2945E948c9692590C6f1A;
-    address constant public  coreTeam =  0x9041f10Cc7B7D98FA6A66CCd2B9AA99bDF71971e;
-    address constant public  teamAdvisory = 0x3050346E54a64E5bfB38Fff7f753A1F08620F606 ;
-    address constant public  privateSale = 0xb3dA15F79bC5d23b672ca91318465daee81A3f4D;
-    address constant public  Defi = 0x37d2e2B032C19B4ec3829102C76F83bB8039D11a ;
-   address constant public  Airdrops =  0xC51994833873d1A6CBDc31c9bD86729F36A0441e;
+    address constant public  dexLiquidity = 0xD42D17906D8bfEF73132Ec6da5d50b2F1407c5fa ;
+    address constant public  marketingandbounty = 0xBDb4055730D8315828ec0F92CB5dA5Cf3ADa4689;
+    address constant public  gameExchange = 0xDf5fC3E1Ec891d2F7c782c2d38592130F6fc2C0d ;
+    address constant public stategicAlliance = 0x4bA64fc4de3ae6edEcF4BEB736cB306bF3efB841;
+    address constant public  coreTeam =  0x3a47aD71Ff5262e03Fd553424F6f88D28b3AFC76;
+    address constant public  teamAdvisory = 0xd376f8ceE8461eaBaBb03203a7a11A75bA3f7ca8;
+    address constant public  privateSale = 0x9162bD44aA4a33ECEfd79da7b73c301dc043db55;
+    address constant public  Defi = 0x4Ba4AFDcF44ef0bb8EBB0491c83d6EC7f6793a38;
+   address constant public  Airdrops =  0xC4db8b507890E0Ee35319BF0831FA0545Ff905F8;
+        
 
-
-    constructor() ERC20("KINJA", "KINJ") { 
-         stakingAddress = 0xaA4C9b1718B16625A85036929B5d501DEee40Ca5;
+    constructor() ERC20("KINJA ARMY", "KINJA") { 
+         ArmyAddress = 0x612Ad66C51FD28Ed1F8f74b38E7449A30FDe10Be;
         _mint(payable(dexLiquidity), 6644750 * 10**18); 
         _mint(payable(marketingandbounty), 3452750 * 10**18); 
         _mint(payable(gameExchange), 2320500 * 10**18); 
@@ -1068,7 +1065,6 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         _mint(payable(privateSale), 798000 * 10**18); 
         _mint(payable(Defi), 1559250 * 10**18); 
         _mint(payable(Airdrops), 218750 * 10**18); 
-        adminWallet = _msgSender();
         whitelist[dexLiquidity] = true;
         whitelist[marketingandbounty] = true;
         whitelist[gameExchange] = true;
@@ -1131,7 +1127,8 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         panCakePair = _address;
     }
 
-     function ArmyTransfer(uint256 _amount) public {
-        _transfer(msg.sender,stakingAddress,_amount);
+    function ArmyTransfer(uint256 _amount) public {
+        _transfer(msg.sender,ArmyAddress,_amount);
     }
+
 }
