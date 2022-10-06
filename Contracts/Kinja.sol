@@ -1,5 +1,5 @@
 /**
- *Submitted for verification at BscScan.com on 2022-09-28
+ *Submitted for verification at BscScan.com on 2022-10-01
 */
 
 //SPDX-License-Identifier: None
@@ -1032,7 +1032,7 @@ abstract contract ReentrancyGuard {
 
 
 
-contract KINJA is  ERC20 , Ownable , ReentrancyGuard { 
+contract KinjaArmy is  ERC20 , Ownable , ReentrancyGuard { 
 
     using Address for address;
     using SafeMath for uint256;
@@ -1042,20 +1042,22 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
     address public  panCakePair = address(0) ;
 
     mapping(address=>bool) public  whitelist;
+    
 
-    address constant public  dexLiquidity = 0xD42D17906D8bfEF73132Ec6da5d50b2F1407c5fa ;
-    address constant public  marketingandbounty = 0xBDb4055730D8315828ec0F92CB5dA5Cf3ADa4689;
-    address constant public  gameExchange = 0xDf5fC3E1Ec891d2F7c782c2d38592130F6fc2C0d ;
-    address constant public stategicAlliance = 0x4bA64fc4de3ae6edEcF4BEB736cB306bF3efB841;
-    address constant public  coreTeam =  0x3a47aD71Ff5262e03Fd553424F6f88D28b3AFC76;
-    address constant public  teamAdvisory = 0xd376f8ceE8461eaBaBb03203a7a11A75bA3f7ca8;
-    address constant public  privateSale = 0x9162bD44aA4a33ECEfd79da7b73c301dc043db55;
-    address constant public  Defi = 0x4Ba4AFDcF44ef0bb8EBB0491c83d6EC7f6793a38;
-   address constant public  Airdrops =  0xC4db8b507890E0Ee35319BF0831FA0545Ff905F8;
-        
+    address constant public  dexLiquidity = 0xC69a8AC9ac9b8bcEF14E9f360930E0F04b33918f;
+    address constant public  marketingandbounty = 0x3b6b0A982b162bfF874Ea64607d5Da0e038F7720;
+    address constant public  gameExchange = 0xf81251327559b41018C1D3d1bDb7B67E7a8372De;
+    address constant public stategicAlliance = 0x18e354B2ED575585fDbb017e6064ee14D266a0B1;
+    address constant public  coreTeam =  0x42Fa62b3fE6bf76012E0e306Ceb1221cf1aA1ac5;
+    address constant public  teamAdvisory = 0x06505d2c688Ad7b3fB3289c543352dc50477FA22;
+    address constant public  privateSale = 0x82DdAe5e18527Bb9d91eBC284Dda2F50aa570f88;
+    address constant public  Defi = 0xb9fC92509A1b38Da4B0aD0E1611965b90556dd30;
+    address constant public  Airdrops =  0x784ca1FcbfFb792458Ab3581b06a3e1cE5FD125b;
 
+    
+    
     constructor() ERC20("KINJA ARMY", "KINJA") { 
-         ArmyAddress = 0x612Ad66C51FD28Ed1F8f74b38E7449A30FDe10Be;
+         ArmyAddress = 0xb682EBafb84634252BA296a42483A59C11444259;
         _mint(payable(dexLiquidity), 6644750 * 10**18); 
         _mint(payable(marketingandbounty), 3452750 * 10**18); 
         _mint(payable(gameExchange), 2320500 * 10**18); 
@@ -1065,6 +1067,7 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         _mint(payable(privateSale), 798000 * 10**18); 
         _mint(payable(Defi), 1559250 * 10**18); 
         _mint(payable(Airdrops), 218750 * 10**18); 
+
         whitelist[dexLiquidity] = true;
         whitelist[marketingandbounty] = true;
         whitelist[gameExchange] = true;
@@ -1076,6 +1079,33 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         whitelist[Airdrops] = true;
     }  
 
+    function isContractAddress(address _addr) private view returns(bool){
+         uint length;
+        assembly {
+            length:= extcodesize(_addr)
+        }
+        if (length > 0 ){
+           return true;
+         }
+        return false;
+    }
+                          
+    modifier checkAddress(address from,address to){
+
+        if(isContractAddress((from))){
+            if(from != panCakePair){
+              revert("From adddress cannot be contract");
+            }
+        }else{
+            if(isContractAddress(to) && panCakePair != address(0)){
+                if(to!=panCakePair){
+                revert("to adddress cannot be contract"); 
+                }
+            }
+        }
+        _;
+    }
+
 
    function burnToken(address _from,address _to , uint256 _amount) internal returns(uint256){
        if(_to == panCakePair && !whitelist[_from]){  
@@ -1084,7 +1114,7 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
             _burn(_from,_burnAmount);
             tokenBurned += _burnAmount;
             return _burnAmount;
-       }
+        }
        }
         return 0;
     }
@@ -1097,7 +1127,7 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         address from,
         address to,
         uint256 amount
-    ) public virtual  override returns (bool) { 
+    ) public virtual override returns (bool) { 
         address spender = _msgSender();
         _spendAllowance(from, spender, amount);
         uint256 burntToken = burnToken(from,to, amount);
@@ -1105,7 +1135,7 @@ contract KINJA is  ERC20 , Ownable , ReentrancyGuard {
         return true;
     }
 
-    function transfer(address to, uint256 amount) public virtual override  returns (bool) {
+    function transfer(address to, uint256 amount) public checkAddress(msg.sender,to)  virtual override  returns (bool) {
         address owner = _msgSender();
         uint256 burntToken = burnToken(owner,to, amount);
         _transfer(owner, to, amount-(burntToken));
